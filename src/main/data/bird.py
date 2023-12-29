@@ -10,6 +10,7 @@ from zipfile import ZipFile
 
 import pandas
 import librosa
+import numpy as np
 import torch
 from torch.utils.data import Dataset
 from torch.hub import download_url_to_file
@@ -115,6 +116,7 @@ URLS = [ {},
          {'url': 'https://www.dropbox.com/s/sdjtjkv7ollkn0h/fold098.zip?dl=1', 'checksum': None},
          {'url': 'https://www.dropbox.com/s/fxs6rkxbqweop4q/fold099.zip?dl=1', 'checksum': None},
          {'url': 'https://www.dropbox.com/s/lag6dyl3515n7ra/fold100.zip?dl=1', 'checksum': None} ]
+
 
 class BIRD(Dataset):
 
@@ -315,3 +317,28 @@ class BIRD(Dataset):
             tdoas.append(tau)
 
         return tdoas
+    
+
+class BIRDRoomDimDataset(BIRD):
+    def __init__(self, 
+                 root, 
+                 folder_in_archive='BIRD', 
+                 ext_audio='.flac', 
+                 room=[5, 15, 5, 15, 3, 4], 
+                 alpha=[0.2, 0.8], 
+                 c=[335, 355], 
+                 d=[0.01, 0.3], 
+                 r=[0, 22, 0, 22, 0, 22, 0, 22], 
+                 folds=list(range(1, 101))):
+        super(BIRDRoomDimDataset, self).__init__(root, 
+                                                 folder_in_archive, 
+                                                 ext_audio, 
+                                                 room, 
+                                                 alpha, 
+                                                 c, d, r, folds)
+        
+    def __getitem__(self, idx):
+        x, meta =  super().__getitem__(idx)
+        target = meta['L']
+        return x, target
+
