@@ -320,6 +320,7 @@ class BIRD(Dataset):
     
 
 class BIRDRoomDimDataset(BIRD):
+    """A subclass of BIRD which retrieves room dimensions as a target."""
     def __init__(self, 
                  root, 
                  folder_in_archive='BIRD', 
