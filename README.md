@@ -1,2 +1,2 @@
-# RIR-scattering
-An exploration of the use of scattering transforms to encode room impulse responses (RIRs).
+# RIR-encoding
+An exploration of methods for learning informative encodings of the room impulse response (RIR).
