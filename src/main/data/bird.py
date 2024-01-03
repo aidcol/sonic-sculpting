@@ -342,4 +342,33 @@ class BIRDRoomDimDataset(BIRD):
         x, meta =  super().__getitem__(idx)
         target = meta['L']
         return x, target
+    
+
+class BIRDSingleRIRDataset(BIRD):
+    """
+    A subclass of BIRD which retrieves a single RIR and the room dimensions 
+    from each room.
+    """
+    def __init__(self, 
+                 root, 
+                 folder_in_archive='BIRD', 
+                 ext_audio='.flac', 
+                 room=[5, 15, 5, 15, 3, 4], 
+                 alpha=[0.2, 0.8], 
+                 c=[335, 355], 
+                 d=[0.01, 0.3], 
+                 r=[0, 22, 0, 22, 0, 22, 0, 22], 
+                 folds=list(range(1, 101))):
+        super(BIRDSingleRIRDataset, self).__init__(root, 
+                                                 folder_in_archive, 
+                                                 ext_audio, 
+                                                 room, 
+                                                 alpha, 
+                                                 c, d, r, folds)
+        
+    def __getitem__(self, idx):
+        rirs, meta =  super().__getitem__(idx)
+        x = rirs[0]
+        target = torch.FloatTensor(meta['L'])
+        return x, target
 
